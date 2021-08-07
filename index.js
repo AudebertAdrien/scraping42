@@ -5,9 +5,14 @@ require("dotenv").config();
   const url = "https://admissions.42.fr/users/sign_in";
   const email = "audebertadrien.pro@gmail.com";
 
-  const browser = await puppeteer.launch({ headless: false });
-  const page = await browser.newPage();
+  const browser = await puppeteer.launch({
+    headless: false,
+    devtools: false,
+    defaultViewport: null,
+  });
 
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1280, height: 2000 });
   await page.goto(url, { waitUntil: "networkidle2" });
 
   await page.type("input[type=email]", email, { delay: 20 });
@@ -16,30 +21,16 @@ require("dotenv").config();
   await page.click("[aria-label='allow cookies']");
   await page.waitForSelector("[aria-label='allow cookies']", { hidden: true });
 
-  await page.click("input[name=commit]");
+  // await page.click("input[name=commit]");
 
-  /*   const [response] = await Promise.all([
-    page.waitForNavigation({ timeout: 2000 }, { waitUntil: "networkidle2" }),
+  await Promise.all([
+    page.waitForNavigation(),
     page.click("input[name=commit]"),
   ]);
-
-  console.log(response); */
-  //document.querySelector("[aria-label='allow cookies']")
-  //user_email => document.querySelector(".user_email").innerHTML
-  //user_password => document.querySelector("input[type=password]")
-  //value="Connexion" => document.querySelector("[value=Connexion]")
-
-  /* await page.setViewport({
-    width: 1200,
-    height: 1000,
+  await page.waitForTimeout(2000);
+  await page.screenshot({
+    path: "example.png",
   });
 
-  await page.screenshot({ path: "example.png" });
-
-  await page.pdf({
-    path: "page.pdf",
-    format: "A4",
-  }); */
-
-  /* await browser.close(); */
+  await browser.close();
 })();
