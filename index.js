@@ -1,9 +1,10 @@
 const puppeteer = require("puppeteer");
+const fs = require("fs");
 require("dotenv").config();
 
 (async () => {
-  const url = "https://admissions.42.fr/users/sign_in";
-  const email = "audebertadrien.pro@gmail.com";
+  const url = process.env.URL;
+  const email = process.env.EMAIL;
 
   const browser = await puppeteer.launch({
     headless: false,
@@ -29,7 +30,7 @@ require("dotenv").config();
   ]);
   await page.waitForTimeout(2000);
   await page.screenshot({
-    path: "example.png",
+    path: "images/example.png",
   });
 
   await browser.close();
